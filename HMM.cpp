@@ -87,8 +87,8 @@ double vector_inner_mult_log(vector<T> const &vec1, vector<T1> const &vec2) {
 			sum_value = -inf;
 		}
 		else {
-			transform(log_mult.begin(), log_mult.end(), [max_value](double d) {return d - max_value; });
-			sum_value = accumulate(log_mult.begin(), log_mult.end(), 0.0, accum_sum_of_exp);
+			transform(log_mult.begin(), log_mult.end(), log_mult.begin(), [max_value](double d) {return d - max_value; });
+			sum_value = accumulate(log_mult.begin(), log_mult.end(), 0.0, accum_sum_of_exp());
 			sum_value = log(sum_value) + max_value;
 		}
 	}
@@ -141,14 +141,15 @@ vector<T> get_column(vector<vector<T>> const &vec, int n) {
 
 vector<double> rand_initial(int n) {
 	int length = n;
+	random_device rd;
+	mt19937 e2;
+	e2.seed(rd());
+	uniform_real_distribution<> dist(0, 1);
 	vector<double> temp(length, 0);
 	for (int i = 0; i < n; i++) {
 		double sum_temp;
 		sum_temp = accumulate(temp.begin(), temp.end(), 0.0);
 		if (i != n - 1) {
-			random_device rd;
-			mt19937 e2(rd);
-			uniform_real_distribution<> dist(0, 1);
 			double r = dist(e2);
 			temp.at(i) = (1.0 - sum_temp) * r;
 		}
@@ -209,9 +210,9 @@ void HMM::para_ini_inference(void) {
 	for (int i = 0; i < num_stat; i++) {
 		A_trans.at(i) = rand_initial(num_stat);
 	}
-	B_trans.assign(num_obs, vector<double>(num_obs));
+	B_trans.assign(num_obs, vector<double>(num_stat));
 	for (int i = 0; i < num_stat; i++) {
-		vector<double> temp = rand_initial(num_stat);
+		vector<double> temp = rand_initial(num_obs);
 		for (int j = 0; j < num_obs; j++) {
 			B_trans.at(j).at(i) = temp.at(j);
 		}
