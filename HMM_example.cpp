@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void main() {
+int main() {
 	vector<int> a = { 0,2,1,2,1,2,3,0,1,2,0,0,0,1,2,1,0,1,3,2,1,0,0,1,0,1,2,3 };
 	HMM solution(a, 3, 1000);
 	solution.inference();
@@ -24,4 +24,6 @@ void main() {
 	cout << endl;
 
 	system("pause");
+
+	return 0;
 }
