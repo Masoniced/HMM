@@ -154,7 +154,7 @@ vector<double> rand_initial(int n) {
 			temp.at(i) = (1.0 - sum_temp) * r;
 		}
 		else {
-			temp.at(i) = sum_temp;
+			temp.at(i) = 1 - sum_temp;
 		}
 	}
 	return temp;
@@ -259,7 +259,7 @@ void HMM::inference_expectation(void) {
 	for (int ob_it = ob_seq_length - 2; ob_it > -1; ob_it--) {
 		for (int stat_it = 0; stat_it < num_stat; stat_it++) {
 			vector<double> temp_b;
-			temp_b = vector_element_add(b_backward.at(ob_it + 1), B_trans.at(ob_it + 1));
+			temp_b = vector_element_add(b_backward.at(ob_it + 1), B_trans.at(observation_seq.at(ob_it + 1)));
 			b_backward.at(ob_it).at(stat_it) = vector_inner_mult_log(temp_b, A_trans.at(stat_it));
 		}
 	}
